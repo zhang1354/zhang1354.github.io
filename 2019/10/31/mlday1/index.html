@@ -17,7 +17,7 @@
   <meta name="description" content="嘻嘻嘻">
   <meta name="author" content="zzzspider">
   <meta name="keywords" content="">
-  <title>Hello World - 明白很多道理，却依然活不好这一生~·~</title>
+  <title>mlday1 - 明白很多道理，却依然活不好这一生~·~</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Thursday, March 19th 2020, 9:49 am
+                  Thursday, October 31st 2019, 2:46 pm
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    75 字
+                    887 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      1 分钟
+                      3 分钟
                   </span>
                 
 
@@ -169,21 +169,90 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
+              <p>机器学习入门</p>
+<a id="more"></a>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><h2 id="略略略"><a href="#略略略" class="headerlink" title="略略略"></a>略略略</h2><p>字典特征值转化为二维数组/矩阵<br>首先需要知道得到的结果是value而不是key，key在结果中并没有显示。而在此处，二者分别用特征名和特征值来代替。<br>-先用两个字典，他们的value都是数字：</p>
+<pre><code>    dic1 = [{&#39;地区&#39;:100,&#39;温度&#39;:200},{&#39;地区&#39;:200,&#39;温度&#39;:400}]
+    transfer1 = DictVectorizer(sparse=False)
+    data1 = transfer1.fit_transform(dic1)
+    print(&quot;全是数字的特征:\n&quot;,data1)
+结果：
+    全是数字的特征:
+     [[100. 200.]
+     [200. 400.]]</code></pre><p>可以看到，他将字典的value值，通过矩阵或者说二维数组的形式表示出来了。<br>-再将字典的value变成字符串：</p>
+<pre><code>    dic1 = [{&#39;1&#39;:&#39;100&#39;,&#39;温度&#39;:200},{&#39;1&#39;:&#39;200&#39;,&#39;温度&#39;:400}]
+    transfer1 = DictVectorizer(sparse=False)
+    data1 = transfer1.fit_transform(dic1)
+    print(&quot;全是数字的特征:\n&quot;,data1)
+结果：
+    全是数字的特征:
+     [[  1.   0. 200.]
+     [  0.   1. 400.]]</code></pre><p>可以看到，后面的200、400仍然不变，但是前面的string的value值被两个1hot编码给代替了，<br>-再将后面的value值也变成字符串：</p>
+<pre><code>    dic1 = [{&#39;1&#39;:&#39;100&#39;,&#39;温度&#39;:&#39;200&#39;},{&#39;1&#39;:&#39;200&#39;,&#39;温度&#39;:&#39;400&#39;}]
+    transfer1 = DictVectorizer(sparse=False)
+    data1 = transfer1.fit_transform(dic1)
+    print(&quot;全是数字的特征:\n&quot;,data1)
+结果：
+    全是数字的特征:
+     [[1. 0. 1. 0.]
+     [0. 1. 0. 1.]]</code></pre><p>结果是两个value都变成了1hot编码来代替。<br>就是，当特征值为类别（string）时，就会使用1hot编码。<br>-前面输出的都是特征值，下面输出特征名字：</p>
+<pre><code>        dic1 = [{&#39;数字&#39;:&#39;100&#39;,&#39;温度&#39;:200},{&#39;数字&#39;:&#39;200&#39;,&#39;温度&#39;:400}]
+        transfer1 = DictVectorizer(sparse=False)
+        data1 = transfer1.fit_transform(dic1)
+        #print(&quot;全是数字的特征:\n&quot;,data1)
+        print(&quot;特征名字：\n&quot;,transfer1.get_feature_names())
+    结果：
+        全是数字的特征:
+         [[  1.   0. 200.]
+         [  0.   1. 400.]]
+        特征名字：
+         [&#39;数字=100&#39;, &#39;数字=200&#39;, &#39;温度&#39;]</code></pre><p>从名字可以看出，第一列表示“数字=100”，如果你是，就是1；不是，就是0；第二列表示“数字=200”；第三列表示“温度”。以此类推。。。<br>文本特征值转化二位数组</p>
+<hr>
+<p>就是将一段文本的每个单词作为一个特征，统计该单词出现的次数</p>
+<pre><code>    data = [&#39;life is short,i like like python&#39;,&#39;life is too long ,i dislike python&#39;]
+    transfer = CountVectorizer()
+    datanew = transfer.fit_transform(data)
+    print(&quot;运行结果:\n&quot;,datanew.toarray())
+    print(&quot;特征名字：\n&quot;,transfer.get_feature_names())
+结果：
+    运行结果:
+     [[0 1 1 2 0 1 1 0]
+     [1 1 1 0 1 1 0 1]]
+    特征名字：
+     [&#39;dislike&#39;, &#39;is&#39;, &#39;life&#39;, &#39;like&#39;, &#39;long&#39;, &#39;python&#39;, &#39;short&#39;, &#39;too&#39;]</code></pre><p>中文文本特征</p>
+<pre><code>    data = [&#39;人生苦短,啦啦啦&#39;,&#39;我我用Python&#39;]
+    transfer = CountVectorizer()
+    datanew = transfer.fit_transform(data)
+    print(&quot;运行结果:\n&quot;,datanew.toarray())
+    print(&quot;特征名字：\n&quot;,transfer.get_feature_names())
+结果：
+    运行结果:
+     [[1 1 0]
+     [0 0 1]]
+    特征名字：
+     [&#39;人生苦短&#39;, &#39;啦啦啦&#39;, &#39;我我用python&#39;]</code></pre><p>可以看到中文文本的结果依据逗号来断句，哈哈哈哈哈。然后介绍一个自动中文分词的库，jieba，可以根据中文的词组规范，自动进行分词，比如“我爱北京天安门”—&gt;“我 爱 北京 天安门”，然后在输出特征就可以了。</p>
+<pre><code>        data = [&#39;我爱北京天安门&#39;, &#39;我和我亲爱的祖国&#39;]
+        new_list = []
+        for i in data:
+            data1 = &quot; &quot;.join(list(jieba.cut(i)))
+            new_list.append(data1)
+        print(new_list)
+    结果：
+        [&#39;我 爱 北京 天安门&#39;, &#39;我 和 我 亲爱 的 祖国&#39;]</code></pre>
             </div>
             <hr>
             <div>
               <p>
                 
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ml/">ml</a>
+                    
+                  </span>
                 
               </p>
               
@@ -194,9 +263,9 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/03/23/test1/">
+                      <a href="/2020/03/11/newlife/">
                         <i class="fa fa-chevron-left"></i>
-                        <span class="hidden-mobile">test1</span>
+                        <span class="hidden-mobile">newlife</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -204,8 +273,8 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/03/11/newlife/">
-                        <span class="hidden-mobile">newlife</span>
+                      <a href="/2019/10/19/%E5%8F%88%E6%98%AF%E5%BB%BA%E6%A8%A1%E7%9A%84%E4%B8%80%E5%A4%A9/">
+                        <span class="hidden-mobile">又是建模的一天</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
@@ -384,7 +453,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Hello World&nbsp;",
+        "mlday1&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

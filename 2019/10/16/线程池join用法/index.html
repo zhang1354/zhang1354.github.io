@@ -17,7 +17,7 @@
   <meta name="description" content="嘻嘻嘻">
   <meta name="author" content="zzzspider">
   <meta name="keywords" content="">
-  <title>Hello World - 明白很多道理，却依然活不好这一生~·~</title>
+  <title>线程池的join用法 - 明白很多道理，却依然活不好这一生~·~</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Thursday, March 19th 2020, 9:49 am
+                  Wednesday, October 16th 2019, 5:01 pm
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    75 字
+                    906 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      1 分钟
+                      4 分钟
                   </span>
                 
 
@@ -169,21 +169,161 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+              <p>承接上篇关于线程池的join用法  ^_^   这图真不错，竟然也成了找图专业户了</p>
+<a id="more"></a>
+<h2 id="threading线程池"><a href="#threading线程池" class="headerlink" title="threading线程池"></a>threading线程池</h2><p>今天一直在查关于线程池的用法，因为线程池是创建线程之后，当不使用的时候就放在线程池里面而不会销毁，相比于创建线程又销毁线程减少了不少时间。但是搜了好多，试了好多，依然没有啥具体的结果。<br>但是搜到了一篇threading+queue创建线程池的做法，就是上一盘文章的用法，所以本文对其进行扩充，主要为增加join的用法。</p>
+<ol>
+<li><p>没有加入join结果：</p>
+<pre><code> import time
+ from fake_useragent import UserAgent as ua
+ import requests
+ from queue import Queue
+ import threading
+
+ def get_url(url_queue):
+     while url_queue.qsize() &gt; 0:
+         url =  url_queue.get()
+         headers = {&quot;User-Agent&quot;: ua().Chrome}
+         response = requests.get(url=url, headers=headers, timeout=10)
+         print(threading.current_thread().name)
+         print(&quot;访问了：&quot;,url)
+
+ def get_queue():
+     url_queue = Queue()
+     url_list = [&quot;http://film.qq.com&quot;,
+                 &quot;http://www.baidu.com&quot;,
+                 &quot;http://www.jd.com&quot;,
+                 &quot;http://www.sina.com&quot;,
+                 &quot;http://zzzspider.top&quot;,
+                 ]
+     for url in url_list:
+         url_queue.put(url)
+     return url_queue
+
+ if __name__ == &#39;__main__&#39;:
+     print(threading.current_thread().name)
+     url_queue = get_queue()
+     for i in range(3):
+         th = threading.Thread(target=get_url,args=(url_queue,))
+         th.start()
+     print(&quot;task done&quot;)</code></pre><p>运行结果：</p>
+<pre><code> MainThread
+ task done
+ Thread-3
+ 访问了： http://www.jd.com
+ Thread-3
+ 访问了： http://www.sina.com
+ Thread-2
+ 访问了： http://www.baidu.com
+ Thread-1
+ 访问了： http://film.qq.com
+ Thread-3
+ 访问了： http://zzzspider.top</code></pre><p>可以看出，想在所有线程结束之后打印出task done的作用没有实现，因为主线程不管子线程，只要运行结束就结束了，但是此时子线程仍然在运行，所以打印内容随着主线程结束之后就输出了。</p>
+</li>
+<li><p>加入join()第一次尝试：仅修改主函数部分</p>
+<pre><code> if __name__ == &#39;__main__&#39;:
+     print(threading.current_thread().name)
+     url_queue = get_queue()
+     for i in range(3):
+         th = threading.Thread(target=get_url,args=(url_queue,))
+         th.start()
+         th.join()
+     print(&quot;task done&quot;)</code></pre><p>运行及结果：</p>
+<pre><code> MainThread
+ Thread-1
+ 访问了： http://film.qq.com
+ Thread-1
+ 访问了： http://www.baidu.com
+ Thread-1
+ 访问了： http://www.jd.com
+ Thread-1
+ 访问了： http://www.sina.com
+ Thread-1
+ 访问了： http://zzzspider.top
+ task done</code></pre><p>虽然实现了task done在主线程结束之后在输出， 但是可以看出此时只有一个线程在执行。。</p>
+</li>
+<li><p>第二次尝试：</p>
+<pre><code> for i in range(3):
+     th = threading.Thread(target=get_url,args=(url_queue,))
+     th.start()
+ th.join()</code></pre><p>这次运行结果就可以了，但是多运行了几次之后发现，仍然会偶发性的产生主线程较早结束的情况。</p>
+</li>
+<li><p>创建一个线程池函数，然后在主线程中调用：</p>
+<pre><code> import time
+ from fake_useragent import UserAgent as ua
+ import requests
+ from queue import Queue
+ import threading
+
+ def get_url(url_queue):
+     while url_queue.qsize() &gt; 0:
+         url =  url_queue.get()
+         headers = {&quot;User-Agent&quot;: ua().Chrome}
+         response = requests.get(url=url, headers=headers, timeout=10)
+         print(threading.current_thread().name)
+         print(threading.current_thread().is_alive())
+         print(&quot;访问了：&quot;,url)
+
+ def get_queue():
+     url_queue = Queue()
+     url_list = [&quot;http://film.qq.com&quot;,
+                 &quot;http://www.baidu.com&quot;,
+                 &quot;http://www.jd.com&quot;,
+                 &quot;http://www.sina.com&quot;,
+                 &quot;http://zzzspider.top&quot;,
+                 ]
+     for url in url_list:
+         url_queue.put(url)
+     return url_queue
+
+ def th_list():
+     th_list = []
+     for i in range(4):
+         th = threading.Thread(target=get_url,args=(url_queue,))
+         th_list.append(th)
+     return th_list
+ if __name__ == &#39;__main__&#39;:
+     for i in range(10):
+         print(threading.current_thread().name)
+         url_queue = get_queue()
+         th_list1 = th_list()
+         for th in th_list1:
+             th.start()
+         th.join()
+         print(&quot;task done&quot;)
+         print(th.is_alive())</code></pre><p>运行结果，比3好多了，但是！！！还有很小概率的出现那个情况。。。。属实不知道为什么。。。</p>
+</li>
+<li><p>终极版<br>修改4的代码：</p>
+<pre><code> if __name__ == &#39;__main__&#39;:
+     for i in range(10):
+         print(threading.current_thread().name)
+         url_queue = get_queue()
+         th_list1 = th_list()
+         for th in th_list1:
+             th.start()
+         for th in th_list1:
+             th.join()
+         print(&quot;task done&quot;)
+         print(th.is_alive())</code></pre><p>然后循环了10次，没出现错误的情况，，，虽然成功了，但是不知道为什么。。。懵逼中</p>
+</li>
+</ol>
 
             </div>
             <hr>
             <div>
               <p>
                 
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/join%E7%94%A8%E6%B3%95/">join用法</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池</a>
+                    
+                  </span>
                 
               </p>
               
@@ -194,9 +334,9 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/03/23/test1/">
+                      <a href="/2019/10/19/%E5%8F%88%E6%98%AF%E5%BB%BA%E6%A8%A1%E7%9A%84%E4%B8%80%E5%A4%A9/">
                         <i class="fa fa-chevron-left"></i>
-                        <span class="hidden-mobile">test1</span>
+                        <span class="hidden-mobile">又是建模的一天</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -204,8 +344,8 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/03/11/newlife/">
-                        <span class="hidden-mobile">newlife</span>
+                      <a href="/2019/10/14/1014.html/">
+                        <span class="hidden-mobile">关于threading多线程与tomorrow协程爬虫的一些对比</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
@@ -384,7 +524,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Hello World&nbsp;",
+        "线程池的join用法&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

@@ -17,7 +17,7 @@
   <meta name="description" content="嘻嘻嘻">
   <meta name="author" content="zzzspider">
   <meta name="keywords" content="">
-  <title>Hello World - 明白很多道理，却依然活不好这一生~·~</title>
+  <title>关于threading多线程与tomorrow协程爬虫的一些对比 - 明白很多道理，却依然活不好这一生~·~</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Thursday, March 19th 2020, 9:49 am
+                  Monday, October 14th 2019, 8:50 pm
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    75 字
+                    1.5k 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      1 分钟
+                      6 分钟
                   </span>
                 
 
@@ -169,21 +169,142 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+              <p>记录一下threading构造多线程请求的基本语法，以及关于tomorrow协程爬虫的基本语法，并且对比一下二者的效率^…^,</p>
+<a id="more"></a>
+<hr>
+<h2 id="threading"><a href="#threading" class="headerlink" title="threading"></a>threading</h2><ol>
+<li><p>刚开始使用threading的时候与requests配合使用，但是每次都会出现重复请求的情况，就是虽然产生了多线程执行，但是每次多线程都请求相同的内容，最终发现是因为使用for循环来获取一个list中的url出的问题。不应该直接在list中获取url，而是先将list遍历存入到队列queue中，因为queue是一个队列，存在先入先出原则，而且等于说第一个数被拿出去了，就没有了，你再从中取值的话，就只能取第二个数，所以这样就使得不会产生重复的情况。下面是实现的语法。</p>
+</li>
+<li><p>threading+requests的用法：<br>(1) 首先需要定义一个队列函数：</p>
+<pre><code> def url_queue():
+     list = [1,2,....]
+     for i in url_list:
+         url_queue.put(i)
+ return url_queue</code></pre><p>结果可以得到一个队列：url_queue<br>(2) 定义一个requests函数：</p>
+<pre><code> def get_html(url_queue):
+     while url_queue.qsize() &gt; 0:
+         url = url_queue.get()
+         response = requests.get(url=url,headers = headers,timeout = 10)
+         response.encoding = &#39;utf-8&#39;
+         response = response.text
+         print(response)
+     print(&quot;总用时:&quot;,time.time()-star_time)       #测试运行时间</code></pre><p>注意几个点：1是队列循环while，当然用for理论上也可以的，然后是编码问题。当我print网页内容时候，发现中文乱码，原因是网站的编码格式和Python解释器的格式不一样造成的，所以可以将responds进行编码’utf-8’，然后就可以输出内容了。<br>(3) 定义一个线程函数：</p>
+<pre><code> def th_list():
+     thr_list = []
+     for i in range(5):
+         t_get = threading.Thread(target=get_html,args=(url_queue,))
+         thr_list.append(t_get)
+     return thr_list</code></pre><p>这一步的目的就是要构建一个线程的列表，以便于一会主函数调用，注意在targ参数中传入函数名，args参数中传入变量。<br>(4) 主函数：</p>
+<pre><code> if __name__ == &#39;__main__&#39;:
+     star_time = time.time()   #测定运行时间
+     url_queue = url_queue()   #得到url队列
+     thr_list = th_list()      #调用创建线程函数，此时创建了一个具有n个线程的线程列表
+     for th in thr_list:          #遍历线程，实际上多线程就发生在这一步中，当上一个线程io操作时，
+         th.start()              #就会调用线程列表中的其他闲置线程运行。</code></pre><p>(5) 完整代码如下：</p>
+<pre><code> import threading
+ import requests
+ from fake_useragent import UserAgent as ua
+ from queue import Queue
+ import time
+ #coding:utf-8
+
+ headers = {&quot;User-Agent&quot;: ua().Chrome}
+ url_queue = Queue()
+ def get_url():
+     url_list = [&quot;http://film.qq.com&quot;,
+                 &quot;http://film.qq.com&quot;,
+                 &quot;http://film.qq.com&quot;,
+                 ]
+     for i in url_list:
+         url_queue.put(i)
+     return url_queue
+ def get_html(url_queue):
+     while url_queue.qsize() &gt; 0:
+         url = url_queue.get()
+         response = requests.get(url=url,headers = headers,timeout = 10)
+         response.encoding = &#39;utf-8&#39;
+         response = response.text
+         print(response)
+     print(&quot;总用时:&quot;,time.time()-star_time)
+ def th_list():
+     thr_list = []
+     for i in range(2):
+         t_get = threading.Thread(target=get_html,args=(url_queue,))
+         thr_list.append(t_get)
+     return thr_list
+ if __name__ == &#39;__main__&#39;:
+     star_time = time.time()
+     url_queue = get_url()
+     thr_list = th_list()
+     for th in thr_list:
+         th.start()</code></pre></li>
+</ol>
+<hr>
+<h2 id="tomorrow协程爬虫"><a href="#tomorrow协程爬虫" class="headerlink" title="tomorrow协程爬虫"></a>tomorrow协程爬虫</h2><h2 id="协程是什么？"><a href="#协程是什么？" class="headerlink" title="协程是什么？"></a>协程是什么？</h2><p>首先我们得知道协程是啥？协程其实可以认为是比线程更小的执行单元。 为啥说他是一个执行单元，因为他自带CPU上下文。这样只要在合适的时机， 我们可以把一个协程 切换到另一个协程。 只要这个过程中保存或恢复 CPU上下文那么程序还是可以运行的。</p>
+<p>通俗的理解：在一个线程中的某个函数，可以在任何地方保存当前函数的一些临时变量等信息，然后切换到另外一个函数中执行，注意不是通过调用函数的方式做到的，并且切换的次数以及什么时候再切换到原来的函数都由开发者自己确定<br>协程与线程？</p>
+<hr>
+<p>那么这个过程看起来比线程差不多。其实不然, 线程切换从系统层面远不止保存和恢复 CPU上下文这么简单。 操作系统为了程序运行的高效性每个线程都有自己缓存Cache等等数据，操作系统还会帮你做这些数据的恢复操作。 所以线程的切换非常耗性能。但是协程的切换只是单纯的操作CPU的上下文，所以一秒钟切换个上百万次系统都抗的住。<br>                                 （摘自—<a href="https://aceld.gitbooks.io/python/content/fu-wu-qi-mo-xing/xie-cheng.html）" target="_blank" rel="noopener">https://aceld.gitbooks.io/python/content/fu-wu-qi-mo-xing/xie-cheng.html）</a><br>通俗来讲，协程是线程的细分，实现功能和多线程差不多，(在深入理解日后再说）但是协程创建时间相比线程少，所以更加高效。<br>tomorrow</p>
+<hr>
+<p>实现代码如下：</p>
+<pre><code>    import time
+    from requests_html import HTMLSession
+    from fake_useragent import UserAgent as ua
+    from tomorrow import threads
+
+    headers = {&quot;User-Agent&quot;: ua().Chrome}
+    session = HTMLSession()
+    url_list = [&quot;http://film.qq.com&quot;,
+                &quot;http://film.qq.com&quot;,]
+    @threads(2)
+    def async_get_req(url, timeout=10):
+        try:
+            req = session.get(url, headers=headers, timeout=timeout)
+            return req
+        except:
+            pass
+    def get_link(req_list):
+        for req in req_list:
+            try:
+                print(req.html.text)
+            except:
+                pass
+    if __name__ == &#39;__main__&#39;:
+        start2 = time.time()
+        req_list = []
+        for url in url_list:
+            req = async_get_req(url)
+            req_list.append(req)
+        get_link(req_list)
+        end2 = time.time()
+        print(&quot;并发后花费时间&quot;, end2 - start2)</code></pre><p>在构建过程中，唯一出现的问题就是，如果将上述两个函数合并为一个函数的话，协程就不会生效：</p>
+<pre><code>    req_list = []
+        for url in url_list:
+            req = async_get_req(url)
+            req_list.append(req)
+            print(req.html.links)  #就是删除get_link函数，使其在此处实现，结果是不能协程执行，函数一个一个执行</code></pre><p>之后进行修改：</p>
+<pre><code>    req_list = []
+    for url in url_list:
+        req = async_get_req(url)
+        req_list.append(req)
+            for i in req_list：
+                print(req.html.links)</code></pre><p>竟然就可以工作了，不知道为什么。。。<br>注意的地方就是，要创建多少线程，只要在函数前添加   @threads(2)  即可，方便，简单，高效。还有就是引入from requests_html import HTMLSession这个库，可以直接在网页获取之后就将其解析出来。十分方便。<br>最后通过运行时间对比，发现当线程数量和协程数量调大之后，多线程运行效率高于协程；而数量较小时候，协程效率高于多线程。灵活运用喽。</p>
 
             </div>
             <hr>
             <div>
               <p>
                 
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%8F%E7%A8%8B/">协程</a>
+                    
+                  </span>
                 
               </p>
               
@@ -194,9 +315,9 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/03/23/test1/">
+                      <a href="/2019/10/16/%E7%BA%BF%E7%A8%8B%E6%B1%A0join%E7%94%A8%E6%B3%95/">
                         <i class="fa fa-chevron-left"></i>
-                        <span class="hidden-mobile">test1</span>
+                        <span class="hidden-mobile">线程池的join用法</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -204,8 +325,8 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/03/11/newlife/">
-                        <span class="hidden-mobile">newlife</span>
+                      <a href="/2019/10/07/1007duoxiancheng.html/">
+                        <span class="hidden-mobile">Python多线程与多进程</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
@@ -384,7 +505,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Hello World&nbsp;",
+        "关于threading多线程与tomorrow协程爬虫的一些对比&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
