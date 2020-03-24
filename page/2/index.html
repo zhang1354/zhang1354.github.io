@@ -17,7 +17,7 @@
   <meta name="description" content="嘻嘻嘻">
   <meta name="author" content="zzzspider">
   <meta name="keywords" content="">
-  <title>Tags - 随笔 - 明白很多道理，却依然活不好这一生</title>
+  <title>明白很多道理，却依然活不好这一生</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -43,7 +43,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 100vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -124,6 +124,10 @@
           </div>
 
           
+            <div class="scroll-down-bar">
+              <i class="fas fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
         </div>
       </div>
     </div>
@@ -133,42 +137,61 @@
     
       <div class="container nopadding-md">
         <div class="py-5 z-depth-3" id="board"
-          >
+          style=margin-top:0>
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-<!--  <p class="h4">3 posts in total.</p>-->
-  <hr>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/09/29/firstpage.html/">
+        <p class="h4 index-header">welcome to zzzspider&#39;s blog</p>
+      </a>
+
+      <a href="/2019/09/29/firstpage.html/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">无意之中看见通过github pages来搭建一个小网站的教程，竟然不用购买服务器，还有现成的网页模板可以使用，着实吃了一鲸于是，今天就在欲望的驱动下，使用轮子，造一个网站吧。。。。。...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-29&nbsp;&nbsp;
+        
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/welcome/">welcome</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="index posts navigation">
+    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
+      <a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </span>
+  </nav>
   
-    
-      
-      <p class="h5">2020</p>
-    
-    <a href="/2020/03/24/birthday/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">birthday</span>
-      <span style="float: right;">03-24</span>
-    </a>
-  
-    
-      
-      <p class="h5">2019</p>
-    
-    <a href="/2019/10/19/%E5%8F%88%E6%98%AF%E5%BB%BA%E6%A8%A1%E7%9A%84%E4%B8%80%E5%A4%A9/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">又是建模的一天</span>
-      <span style="float: right;">10-19</span>
-    </a>
-  
-    
-    <a href="/2019/10/07/1007suibi.html/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">十一小结</span>
-      <span style="float: right;">10-07</span>
-    </a>
-  
-</div>
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
+      ele.href += '#board';
+    }
+  </script>
 
 
 
@@ -324,7 +347,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Tag - 随笔&nbsp;",
+        "胆小懦弱，性格诡异，慵懒废柴，建议远离！&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
