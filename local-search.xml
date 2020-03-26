@@ -4,6 +4,27 @@
   
   
   <entry>
+    <title>数据分析系列-2</title>
+    <link href="/2020/03/25/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-2/"/>
+    <url>/2020/03/25/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="三、数据分析第三课-python基本数据结构"><a href="#三、数据分析第三课-python基本数据结构" class="headerlink" title="三、数据分析第三课-python基本数据结构"></a>三、数据分析第三课-python基本数据结构</h1><h2 id="1数据结构和序列"><a href="#1数据结构和序列" class="headerlink" title="1数据结构和序列"></a>1数据结构和序列</h2><h3 id="1-1元组"><a href="#1-1元组" class="headerlink" title="1.1元组"></a>1.1元组</h3><p>元组是⼀个固定⻓度，不可改变的Python序列对象。创建元组的最简单⽅式，是⽤逗号分隔⼀列值：</p><h4 id="1-1-1创建"><a href="#1-1-1创建" class="headerlink" title="1.1.1创建"></a>1.1.1创建</h4><pre><code>    #tuple--元组，创建非常简单，直接用逗号就可以了,或者是用括号+逗号    #创建tuple    tup1 = (4,5,6)    type(tup1)    tup2 = 1,2,3    type(tup2)</code></pre><h4 id="1-1-2将列表转换为tuple"><a href="#1-1-2将列表转换为tuple" class="headerlink" title="1.1.2将列表转换为tuple"></a>1.1.2将列表转换为tuple</h4><pre><code>    #将列表转换为tuple    b = [1,2,3]    a = tuple(a)    type(a)</code></pre><h4 id="1-1-3tuple没法直接修改，没有append、delete，只要创建了就不可改变。"><a href="#1-1-3tuple没法直接修改，没有append、delete，只要创建了就不可改变。" class="headerlink" title="1.1.3tuple没法直接修改，没有append、delete，只要创建了就不可改变。"></a>1.1.3tuple没法直接修改，没有append、delete，只要创建了就不可改变。</h4><p>但是tuple中如果包含可以改变的数组比如list，可以修改list中的内容</p><pre><code>    c = ([1,2,3],5)    c[0].append(4)    c    结果：    ([1, 2, 3, 4], 5)</code></pre><h4 id="1-1-4元组可以使用“-”直接将两个元组加起来"><a href="#1-1-4元组可以使用“-”直接将两个元组加起来" class="headerlink" title="1.1.4元组可以使用“+”直接将两个元组加起来"></a>1.1.4元组可以使用“+”直接将两个元组加起来</h4><pre><code>    d = 1,2,3    e = 4,5,6    d+e    结果：    (1, 2, 3, 4, 5, 6)</code></pre><h4 id="1-1-5元组拆分："><a href="#1-1-5元组拆分：" class="headerlink" title="1.1.5元组拆分："></a>1.1.5元组拆分：</h4><pre><code>    #元组拆分    f = 1,2,3    a,b,c=f    a    结果：    1</code></pre><h3 id="1-2列表"><a href="#1-2列表" class="headerlink" title="1.2列表"></a>1.2列表</h3><p>除去一些基本功能，将不知道的list功能记录一下</p><h4 id="1-2-1添加和删除元素"><a href="#1-2-1添加和删除元素" class="headerlink" title="1.2.1添加和删除元素"></a>1.2.1添加和删除元素</h4><p>apend、insert、pop、remove</p><pre><code>    #append在末尾添加元素，在某地插入元素用insert    list_1 = [1,2,3,5]    list_1.insert(3,4)    list_1    结果：    [1, 2, 3, 4, 5]    #删除元素--pop    #insert的逆运算是pop，删除第几个元素    list_1.pop(0)    list_1    结果    [2,3,4,5]    #删除元素--remove    #remove删除某个值，默认移除找到的第一个值    list_2 = [1,2,3,4,5,6,&quot;aaa&quot;]    list_2.remove(&quot;aaa&quot;)    list_2    结果：    [1,2,3,4,5,6]</code></pre><h4 id="1-2-2-extend函数"><a href="#1-2-2-extend函数" class="headerlink" title="1.2.2 extend函数"></a>1.2.2 extend函数</h4><p>如果已经定义了一个列表，使用append可以添加元素，使用extend可以追加多个元素，可以追加另一个列表，</p><pre><code>    everything    =    []     for    chunk    in    list_of_lists:                        everything.extend(chunk)    #extend比下述方法更快    everything    =    []     for    chunk    in    list_of_lists:                        everything    =    everything    +    chunk</code></pre><h4 id="1-2-3排序"><a href="#1-2-3排序" class="headerlink" title="1.2.3排序"></a>1.2.3排序</h4><p>sort()函数</p><pre><code>    #sort函数    a = [1,2,5,4,3,5,8,1,]    a.sort()    a    结果：    [1, 1, 2, 3, 4, 5, 5, 8]</code></pre><h4 id="1-2-4切片"><a href="#1-2-4切片" class="headerlink" title="1.2.4切片"></a>1.2.4切片</h4><p>正向切片的结果是左闭右开的</p><pre><code>    #切片    b = [1,2,3,4,5,6,7,8,9]    b[1:5]    结果：    [2, 3, 4, 5]</code></pre><p>反向切片的结果也是左开右闭的，因为负数切片也是从0(就是从右边）开始，然后从右往左数，第一个是0，第一个是-1，，，，[-5:-1],从右边开始数，第一个数是-1，闭合，第二个是-5就是开的。先数到的那个数是闭合的，后数到的就是开的</p><pre><code>    #切片    b = [1,2,3,4,5,6,7,8,9]    b[-5:-1]    结果：    [5, 6, 7, 8]</code></pre><h4 id="1-2-5-zip函数"><a href="#1-2-5-zip函数" class="headerlink" title="1.2.5 zip函数"></a>1.2.5 zip函数</h4><p>zip    可以将多个列表、元组或其它序列成对组合成⼀个元组列表：</p><pre><code>    list1=[1,2,3,4]    list2 = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]    list3 = zip(list1,list2)    print(list(list3))    结果：    [(1, &#39;a&#39;), (2, &#39;b&#39;), (3, &#39;c&#39;), (4, &#39;d&#39;)]    print(dict(list3))    结果：    {1: &#39;a&#39;, 2: &#39;b&#39;, 3: &#39;c&#39;, 4: &#39;d&#39;}</code></pre><h4 id="1-2-6-reversed函数"><a href="#1-2-6-reversed函数" class="headerlink" title="1.2.6 reversed函数"></a>1.2.6 reversed函数</h4><p>reversed    可以从后向前迭代⼀个序列：</p><pre><code>    list(reversed(range(10)))    结果：    [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]</code></pre><h3 id="1-3字典"><a href="#1-3字典" class="headerlink" title="1.3字典"></a>1.3字典</h3><p>字典就不想多说了，很多都是通用的，到用的时候在查吧。</p><h3 id="1-4集合"><a href="#1-4集合" class="headerlink" title="1.4集合"></a>1.4集合</h3><p>集合是⽆序的不可重复的元素的集合。你可以把它当做字典，但是只有键没有值。可以⽤两种⽅式创 建集合：通过set函数或使⽤尖括号set语句：{1,2,3}</p><h4 id="1-4-1集合取并集"><a href="#1-4-1集合取并集" class="headerlink" title="1.4.1集合取并集"></a>1.4.1集合取并集</h4><p>合并是取两个集合中不重复的元素。可以⽤    union    ⽅法，或者    |    运算符</p><pre><code>    a = {1,2,3,4,5,6}    b = {3,4,5,7,8,9}    a|b    结果：    {1, 2, 3, 4, 5, 6, 7, 8, 9}</code></pre><h4 id="1-4-2集合取交集"><a href="#1-4-2集合取交集" class="headerlink" title="1.4.2集合取交集"></a>1.4.2集合取交集</h4><p>交集的元素包含在两个集合中。可以⽤    intersection    或    &amp;    运算符：</p><pre><code>    a&amp;b    结果：    {3, 4, 5}</code></pre>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>data analysis</tag>
+      
+      <tag>python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>数据分析系列-1</title>
     <link href="/2020/03/25/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-1/"/>
     <url>/2020/03/25/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-1/</url>
