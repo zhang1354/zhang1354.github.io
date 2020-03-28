@@ -17,7 +17,7 @@
   <meta name="description" content="嘻嘻嘻">
   <meta name="author" content="zzzspider">
   <meta name="keywords" content="">
-  <title>数据分析系列-2 - 明白很多道理，却依然活不好这一生</title>
+  <title>数据分析系列-3 - 明白很多道理，却依然活不好这一生</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Wednesday, March 25th 2020, 2:01 pm
+                  Thursday, March 26th 2020, 4:16 pm
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    963 字
+                    1k 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      4 分钟
+                      5 分钟
                   </span>
                 
 
@@ -169,98 +169,129 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <h1 id="三、数据分析第三课-python基本数据结构"><a href="#三、数据分析第三课-python基本数据结构" class="headerlink" title="三、数据分析第三课-python基本数据结构"></a>三、数据分析第三课-python基本数据结构</h1><h2 id="1数据结构和序列"><a href="#1数据结构和序列" class="headerlink" title="1数据结构和序列"></a>1数据结构和序列</h2><h3 id="1-1元组"><a href="#1-1元组" class="headerlink" title="1.1元组"></a>1.1元组</h3><p>元组是⼀个固定⻓度，不可改变的Python序列对象。创建元组的最简单⽅式，是⽤逗号分隔⼀列值：</p>
-<h4 id="1-1-1创建"><a href="#1-1-1创建" class="headerlink" title="1.1.1创建"></a>1.1.1创建</h4><pre><code>    #tuple--元组，创建非常简单，直接用逗号就可以了,或者是用括号+逗号
-    #创建tuple
-    tup1 = (4,5,6)
-    type(tup1)
-    tup2 = 1,2,3
-    type(tup2)</code></pre><h4 id="1-1-2将列表转换为tuple"><a href="#1-1-2将列表转换为tuple" class="headerlink" title="1.1.2将列表转换为tuple"></a>1.1.2将列表转换为tuple</h4><pre><code>    #将列表转换为tuple
-    b = [1,2,3]
-    a = tuple(a)
-    type(a)</code></pre><h4 id="1-1-3tuple没法直接修改，没有append、delete，只要创建了就不可改变。"><a href="#1-1-3tuple没法直接修改，没有append、delete，只要创建了就不可改变。" class="headerlink" title="1.1.3tuple没法直接修改，没有append、delete，只要创建了就不可改变。"></a>1.1.3tuple没法直接修改，没有append、delete，只要创建了就不可改变。</h4><p>但是tuple中如果包含可以改变的数组比如list，可以修改list中的内容</p>
-<pre><code>    c = ([1,2,3],5)
-    c[0].append(4)
-    c
+              <h1 id="四、数据分析第四课-pandas"><a href="#四、数据分析第四课-pandas" class="headerlink" title="四、数据分析第四课-pandas"></a>四、数据分析第四课-pandas</h1><h2 id="1-Series"><a href="#1-Series" class="headerlink" title="1.Series"></a>1.Series</h2><h3 id="1-1创建series"><a href="#1-1创建series" class="headerlink" title="1.1创建series"></a>1.1创建series</h3><p>series就是左边是索引，右边是数据的数据结构，索引可以自定义，默认是从0到n-1<br>注意Series的S是大写的</p>
+<pre><code>    import pandas as pd
+    series1 = pd.Series([1,2,3,4],index=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;])
+    series1
     结果：
-    ([1, 2, 3, 4], 5)</code></pre><h4 id="1-1-4元组可以使用“-”直接将两个元组加起来"><a href="#1-1-4元组可以使用“-”直接将两个元组加起来" class="headerlink" title="1.1.4元组可以使用“+”直接将两个元组加起来"></a>1.1.4元组可以使用“+”直接将两个元组加起来</h4><pre><code>    d = 1,2,3
-    e = 4,5,6
-    d+e
+    a    1
+    b    2
+    c    3
+    d    4
+    dtype: int64</code></pre><h3 id="1-2字典转换为series"><a href="#1-2字典转换为series" class="headerlink" title="1.2字典转换为series"></a>1.2字典转换为series</h3><p>就是将字典转换为series，键是index，值是数值。</p>
+<pre><code>    sdata={&#39;Ohio&#39;:    35000,    &#39;Texas&#39;:    71000,    &#39;Oregon&#39;:    16000,    &#39;Utah&#39;:    5000}
+    obj3    =    pd.Series(sdata)
+    obj3
+    结果:
+    Ohio      35000
+    Texas     71000
+    Oregon    16000
+    Utah       5000
+    dtype: int64</code></pre><h2 id="2-DataFrame"><a href="#2-DataFrame" class="headerlink" title="2.DataFrame"></a>2.DataFrame</h2><p>DataFrame是⼀个表格型的数据结构，它含有⼀组有序的列，每列可以是不同的值类型（数值、字符 串、布尔值等）。DataFrame既有⾏索引也有列索引，它可以被看做由Series组成的字典（共⽤同⼀ 个索引）。DataFrame中的数据是以⼀个或多个⼆维块存放的（⽽不是列表、字典或别的⼀维数据结 构）</p>
+<h3 id="2-1创建DataFrame"><a href="#2-1创建DataFrame" class="headerlink" title="2.1创建DataFrame"></a>2.1创建DataFrame</h3><p>建DataFrame的办法有很多，最常⽤的⼀种是直接传⼊⼀个由等⻓列表或NumPy数组组成的字典：</p>
+<pre><code>    data={&#39;state&#39;:[&#39;Ohio&#39;,&#39;Ohio&#39;,&#39;Ohio&#39;,&#39;Nevada&#39;,&#39;Nevada&#39;,&#39;Nevada&#39;],
+         &#39;year&#39;:[2000,2001,2002,2001,2002,2003],
+         &#39;pop&#39;:[1.5,1.7,3.6,2.4,2.9,3.2]} 
+    frame=pd.DataFrame(data)
+    frame
+    结果:
+        state    year    pop
+    0    Ohio    2000    1.5
+    1    Ohio    2001    1.7
+    2    Ohio    2002    3.6
+    3    Nevada    2001    2.4
+    4    Nevada    2002    2.9
+    5    Nevada    2003    3.2</code></pre><p>指定列的排序方式,并且指定index索引</p>
+<pre><code>    data2 = pd.DataFrame(data,columns=[&#39;year&#39;,&#39;state&#39;,&#39;pop&#39;],index=[&#39;one&#39;,&#39;two&#39;,&#39;three&#39;,&#39;four&#39;,&#39;five&#39;,&#39;six&#39;])
+    data2
+    结果:
+        year    state    pop
+    one    2000    Ohio    1.5
+    two    2001    Ohio    1.7
+    three    2002    Ohio    3.6
+    four    2001    Nevada    2.4
+    five    2002    Nevada    2.9
+    six    2003    Nevada    3.2</code></pre><h3 id="2-2取出字典某列作为series"><a href="#2-2取出字典某列作为series" class="headerlink" title="2.2取出字典某列作为series"></a>2.2取出字典某列作为series</h3><pre><code>    data2[&#39;year&#39;]
     结果：
-    (1, 2, 3, 4, 5, 6)</code></pre><h4 id="1-1-5元组拆分："><a href="#1-1-5元组拆分：" class="headerlink" title="1.1.5元组拆分："></a>1.1.5元组拆分：</h4><pre><code>    #元组拆分
-    f = 1,2,3
-    a,b,c=f
-    a
+    one      2000
+    two      2001
+    three    2002
+    four     2001
+    five     2002
+    six      2003
+    Name: year, dtype: int64</code></pre><h3 id="2-3为不存在的列赋值会创建出⼀个新列。"><a href="#2-3为不存在的列赋值会创建出⼀个新列。" class="headerlink" title="2.3为不存在的列赋值会创建出⼀个新列。"></a>2.3为不存在的列赋值会创建出⼀个新列。</h3><p>关键字del⽤于删除列。</p>
+<pre><code>    del data2[&#39;pop&#39;]
+    data2
     结果：
-    1</code></pre><h3 id="1-2列表"><a href="#1-2列表" class="headerlink" title="1.2列表"></a>1.2列表</h3><p>除去一些基本功能，将不知道的list功能记录一下</p>
-<h4 id="1-2-1添加和删除元素"><a href="#1-2-1添加和删除元素" class="headerlink" title="1.2.1添加和删除元素"></a>1.2.1添加和删除元素</h4><p>apend、insert、pop、remove</p>
-<pre><code>    #append在末尾添加元素，在某地插入元素用insert
-    list_1 = [1,2,3,5]
-    list_1.insert(3,4)
-    list_1
+        year    state
+    one    2000    Ohio
+    two    2001    Ohio
+    three    2002    Ohio
+    four    2001    Nevada
+    five    2002    Nevada
+    six    2003    Nevada</code></pre><h3 id="2-4嵌套字典，如下字典格式，外层字典的键“nevada”、“ohio”作为列，内层键”2001”、”2002”则作为⾏索引。"><a href="#2-4嵌套字典，如下字典格式，外层字典的键“nevada”、“ohio”作为列，内层键”2001”、”2002”则作为⾏索引。" class="headerlink" title="2.4嵌套字典，如下字典格式，外层字典的键“nevada”、“ohio”作为列，内层键”2001”、”2002”则作为⾏索引。"></a>2.4嵌套字典，如下字典格式，外层字典的键“nevada”、“ohio”作为列，内层键”2001”、”2002”则作为⾏索引。</h3><pre><code>        pop    =    {&#39;Nevada&#39;:    {2001:    2.4,    2002:    2.9},             
+                 &#39;Ohio&#39;:    {2000:    1.5,    2001:    1.7,2002:    3.6}}
+        frame = pd.DataFrame(pop)
+        frame
+        结果：
+          Nevada    Ohio
+    2000    NaN        1.5
+    2001    2.4        1.7
+    2002    2.9        3.6</code></pre><h3 id="2-5-DataFrame转置-交换行和列"><a href="#2-5-DataFrame转置-交换行和列" class="headerlink" title="2.5 DataFrame转置(交换行和列)"></a>2.5 DataFrame转置(交换行和列)</h3><pre><code>    frame.T
     结果：
-    [1, 2, 3, 4, 5]
+        2000    2001    2002
+Nevada    NaN        2.4        2.9
+Ohio    1.5        1.7        3.6</code></pre><h3 id="2-6设置DataFrame的index和column的名，就像是表左上角的索引名和行名"><a href="#2-6设置DataFrame的index和column的名，就像是表左上角的索引名和行名" class="headerlink" title="2.6设置DataFrame的index和column的名，就像是表左上角的索引名和行名"></a>2.6设置DataFrame的index和column的名，就像是表左上角的索引名和行名</h3><pre><code>    frame.index.name=&#39;索引名&#39;;frame.columns.name=&#39;行名&#39;
+    frame
+    结果：
+    行名        Nevada    Ohio
+    索引名        
+    2000    NaN        1.5
+    2001    2.4        1.7
+    2002    2.9        3.6</code></pre><h3 id="2-7-values属性"><a href="#2-7-values属性" class="headerlink" title="2.7 values属性"></a>2.7 values属性</h3><p>values属性会以⼆维ndarray的形式返回DataFrame中的数据，就是直接返回dataframe中的数据，去掉了index和columns，输出表格数据</p>
+<pre><code>    frame.values
+    结果：
+    array([[nan, 1.5],
+           [2.4, 1.7],
+           [2.9, 3.6]])</code></pre><h2 id="3-pandas基本功能"><a href="#3-pandas基本功能" class="headerlink" title="3 pandas基本功能"></a>3 pandas基本功能</h2><h3 id="3-1-reindex，对索引进行重命名"><a href="#3-1-reindex，对索引进行重命名" class="headerlink" title="3.1 reindex，对索引进行重命名"></a>3.1 reindex，对索引进行重命名</h3><p>对索引进行重排，按照原来的键值对，对应新的索引顺序进行排列，如果原键值对没有，<br>则赋值为NaN</p>
+<pre><code>    obj    =    pd.Series([4.5,    7.2,-5.3,3.6],index=[&#39;d&#39;,&#39;b&#39;,&#39;a&#39;,&#39;c&#39;])
+    obj2    =    obj.reindex([&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;])
+    obj2
+    结果：
+    a   -5.3
+    b    7.2
+    c    3.6
+    d    4.5
+    e    NaN</code></pre><h3 id="3-2-drop移除某行或者某列"><a href="#3-2-drop移除某行或者某列" class="headerlink" title="3.2 drop移除某行或者某列"></a>3.2 drop移除某行或者某列</h3><p>drop(‘index’)移除某行<br>drop(‘column’,’axis=1’)</p>
+<pre><code>    移除某行
+    obj3 = obj2.drop(&#39;b&#39;)
+    obj3
+    结果：
+    a   -5.3
+    c    3.6
+    d    4.5
+    e    NaN
+    移除某列
+    frame2 = frame.drop(&#39;Ohio&#39;,axis=1)
+    frame2
+    结果：
+            Nevada
+    2000    NaN
+    2001    2.4
+    2002    2.9</code></pre><h3 id="3-3-索引"><a href="#3-3-索引" class="headerlink" title="3.3 索引"></a>3.3 索引</h3><p>直接索引某个index的值，也可以切片索引</p>
+<pre><code>    obj    =    pd.Series(np.arange(4.),index=[&#39;a&#39;,    &#39;b&#39;,&#39;c&#39;,&#39;d&#39;])
+    obj[&#39;b&#39;]
+    结果：
+    1.0
 
-    #删除元素--pop
-    #insert的逆运算是pop，删除第几个元素
-    list_1.pop(0)
-    list_1
-    结果
-    [2,3,4,5]
+    obj[1:2]
+    结果：
+    b    1.0
 
-    #删除元素--remove
-    #remove删除某个值，默认移除找到的第一个值
-    list_2 = [1,2,3,4,5,6,&quot;aaa&quot;]
-    list_2.remove(&quot;aaa&quot;)
-    list_2
-    结果：
-    [1,2,3,4,5,6]</code></pre><h4 id="1-2-2-extend函数"><a href="#1-2-2-extend函数" class="headerlink" title="1.2.2 extend函数"></a>1.2.2 extend函数</h4><p>如果已经定义了一个列表，使用append可以添加元素，使用extend可以追加多个元素，可以追加另一个列表，</p>
-<pre><code>    everything    =    [] 
-    for    chunk    in    list_of_lists:                
-        everything.extend(chunk)
-    #extend比下述方法更快
-    everything    =    [] 
-    for    chunk    in    list_of_lists:                
-        everything    =    everything    +    chunk</code></pre><h4 id="1-2-3排序"><a href="#1-2-3排序" class="headerlink" title="1.2.3排序"></a>1.2.3排序</h4><p>sort()函数</p>
-<pre><code>    #sort函数
-    a = [1,2,5,4,3,5,8,1,]
-    a.sort()
-    a
-    结果：
-    [1, 1, 2, 3, 4, 5, 5, 8]</code></pre><h4 id="1-2-4切片"><a href="#1-2-4切片" class="headerlink" title="1.2.4切片"></a>1.2.4切片</h4><p>正向切片的结果是左闭右开的</p>
-<pre><code>    #切片
-    b = [1,2,3,4,5,6,7,8,9]
-    b[1:5]
-    结果：
-    [2, 3, 4, 5]</code></pre><p>反向切片的结果也是左开右闭的，因为负数切片也是从0(就是从右边）开始，然后从右往左数，第一个是0，第一个是-1，，，，[-5:-1],从右边开始数，第一个数是-1，闭合，第二个是-5就是开的。先数到的那个数是闭合的，后数到的就是开的</p>
-<pre><code>    #切片
-    b = [1,2,3,4,5,6,7,8,9]
-    b[-5:-1]
-    结果：
-    [5, 6, 7, 8]</code></pre><h4 id="1-2-5-zip函数"><a href="#1-2-5-zip函数" class="headerlink" title="1.2.5 zip函数"></a>1.2.5 zip函数</h4><p>zip    可以将多个列表、元组或其它序列成对组合成⼀个元组列表：</p>
-<pre><code>    list1=[1,2,3,4]
-    list2 = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]
-    list3 = zip(list1,list2)
-    print(list(list3))
-    结果：
-    [(1, &#39;a&#39;), (2, &#39;b&#39;), (3, &#39;c&#39;), (4, &#39;d&#39;)]
+    obj[&#39;a&#39;:&#39;b&#39;]
+    a    0.0
+    b    1.0</code></pre><p>注意使用数字索引和index索引的结果不同，数字索引左闭右开，index索引左右都是闭合的。</p>
 
-    print(dict(list3))
-    结果：
-    {1: &#39;a&#39;, 2: &#39;b&#39;, 3: &#39;c&#39;, 4: &#39;d&#39;}</code></pre><h4 id="1-2-6-reversed函数"><a href="#1-2-6-reversed函数" class="headerlink" title="1.2.6 reversed函数"></a>1.2.6 reversed函数</h4><p>reversed    可以从后向前迭代⼀个序列：</p>
-<pre><code>    list(reversed(range(10)))
-    结果：
-    [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]</code></pre><h3 id="1-3字典"><a href="#1-3字典" class="headerlink" title="1.3字典"></a>1.3字典</h3><p>字典就不想多说了，很多都是通用的，到用的时候在查吧。</p>
-<h3 id="1-4集合"><a href="#1-4集合" class="headerlink" title="1.4集合"></a>1.4集合</h3><p>集合是⽆序的不可重复的元素的集合。你可以把它当做字典，但是只有键没有值。可以⽤两种⽅式创 建集合：通过set函数或使⽤尖括号set语句：{1,2,3}</p>
-<h4 id="1-4-1集合取并集"><a href="#1-4-1集合取并集" class="headerlink" title="1.4.1集合取并集"></a>1.4.1集合取并集</h4><p>合并是取两个集合中不重复的元素。可以⽤    union    ⽅法，或者    |    运算符</p>
-<pre><code>    a = {1,2,3,4,5,6}
-    b = {3,4,5,7,8,9}
-    a|b
-    结果：
-    {1, 2, 3, 4, 5, 6, 7, 8, 9}</code></pre><h4 id="1-4-2集合取交集"><a href="#1-4-2集合取交集" class="headerlink" title="1.4.2集合取交集"></a>1.4.2集合取交集</h4><p>交集的元素包含在两个集合中。可以⽤    intersection    或    &amp;    运算符：</p>
-<pre><code>    a&amp;b
-    结果：
-    {3, 4, 5}</code></pre>
             </div>
             <hr>
             <div>
@@ -285,18 +316,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/03/26/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-3/">
-                        <i class="fa fa-chevron-left"></i>
-                        <span class="hidden-mobile">数据分析系列-3</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/03/25/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-1/">
-                        <span class="hidden-mobile">数据分析系列-1</span>
+                      <a href="/2020/03/25/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-2/">
+                        <span class="hidden-mobile">数据分析系列-2</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
@@ -527,7 +552,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "数据分析系列-2&nbsp;",
+        "数据分析系列-3&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
