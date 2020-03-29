@@ -4,6 +4,59 @@
   
   
   <entry>
+    <title>sql学习系列-1</title>
+    <link href="/2020/03/28/sql%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97-1/"/>
+    <url>/2020/03/28/sql%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97-1/</url>
+    
+    <content type="html"><![CDATA[<p>这是sql学习系列课程，hhhhh</p><a id="more"></a><h1 id="1、检索数据"><a href="#1、检索数据" class="headerlink" title="1、检索数据"></a>1、检索数据</h1><h2 id="1-1-select语句"><a href="#1-1-select语句" class="headerlink" title="1.1 select语句"></a>1.1 select语句</h2><p>大多数sql语句都使用大写的关键词,如SELCET，常用小写的来表示列名或者表名。</p><h3 id="1-1-1-检索单个列"><a href="#1-1-1-检索单个列" class="headerlink" title="1.1.1 检索单个列"></a>1.1.1 检索单个列</h3><pre><code>    SELECT 列名 FROM 表名</code></pre><h3 id="1-1-2-检索多个列"><a href="#1-1-2-检索多个列" class="headerlink" title="1.1.2 检索多个列"></a>1.1.2 检索多个列</h3><pre><code>    SELECT 列名,列名,列名 FROM 表名</code></pre><h3 id="1-1-3-检索所有列"><a href="#1-1-3-检索所有列" class="headerlink" title="1.1.3 检索所有列"></a>1.1.3 检索所有列</h3><pre><code>    SELECT * FROM 表名</code></pre><h3 id="1-1-4-检索同列中不同的值"><a href="#1-1-4-检索同列中不同的值" class="headerlink" title="1.1.4 检索同列中不同的值"></a>1.1.4 检索同列中不同的值</h3><pre><code>    SELECT DISTINCT 列名 FROM 表名</code></pre><h3 id="1-1-5-限制搜索结果"><a href="#1-1-5-限制搜索结果" class="headerlink" title="1.1.5 限制搜索结果"></a>1.1.5 限制搜索结果</h3><p>只检索某列的前五行</p><pre><code>    #sqlserver    SELECT TOP 5 列名 FROM 表名    #mysql    SELECT 列名 FROM 表名 LIMIT 5</code></pre><h3 id="1-1-6-注释"><a href="#1-1-6-注释" class="headerlink" title="1.1.6 注释"></a>1.1.6 注释</h3><pre><code>    #注释此行    /*注释    多行*/</code></pre><h1 id="2、排序检索数据"><a href="#2、排序检索数据" class="headerlink" title="2、排序检索数据"></a>2、排序检索数据</h1><h2 id="2-1-按照某个列排序"><a href="#2-1-按照某个列排序" class="headerlink" title="2.1 按照某个列排序"></a>2.1 按照某个列排序</h2><p>从某个表中选择某列，并且按照该列进行排序</p><pre><code>    SELECT 列名 FROM 表名 ORDER BY 列名</code></pre><h2 id="2-2-按照多个列名排序"><a href="#2-2-按照多个列名排序" class="headerlink" title="2.2 按照多个列名排序"></a>2.2 按照多个列名排序</h2><p>从某个表中选择多列，并且先按照列1排序，再按照列2排序，就是再列1排序的基础上，进行列2的排序。</p><pre><code>    SELECT 列名1,列名2,列名3 FROM 表名 ORDER BY 列名1，列名2</code></pre><h2 id="2-3-按照列位置排序"><a href="#2-3-按照列位置排序" class="headerlink" title="2.3 按照列位置排序"></a>2.3 按照列位置排序</h2><p>选择列名1,列名2,列名3  3列，按照先列名2，再列名3的顺序排序</p><pre><code>    SELECT 列名1,列名2,列名3 FROM 表名 ORDER BY 2，3</code></pre>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>sql</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>数据分析系列-路线</title>
+    <link href="/2020/03/28/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/"/>
+    <url>/2020/03/28/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/</url>
+    
+    <content type="html"><![CDATA[<h1 id="零数据分析路线图–持续更新"><a href="#零数据分析路线图–持续更新" class="headerlink" title="零数据分析路线图–持续更新"></a>零数据分析路线图–持续更新</h1><p>数据分析师需要掌握的技术:</p><h2 id="1-统计学—-已经掌握"><a href="#1-统计学—-已经掌握" class="headerlink" title="1.统计学—-已经掌握"></a>1.统计学—-已经掌握</h2><p>描述统计，统计推断，概率论；<br>抽样，分布，估计，置信区间，假设检验；<br>线性回归，时间序列；<br>这部分的知识已经基本具备了，问题不大，以后再有问题可以直接百度。</p><h2 id="2-SQL语言—-目前尚未完全掌握，仅会基本的一些语句"><a href="#2-SQL语言—-目前尚未完全掌握，仅会基本的一些语句" class="headerlink" title="2.SQL语言—-目前尚未完全掌握，仅会基本的一些语句"></a>2.SQL语言—-目前尚未完全掌握，仅会基本的一些语句</h2><p>SQL语言主要用于操作数据库，SQL的范围包括数据插入、查询、更新和删除，数据库模式创建和修改，以及数据访问控制。</p><h2 id="3-EXCEL基本操作—-目前具备基本的EXCEL操作技能"><a href="#3-EXCEL基本操作—-目前具备基本的EXCEL操作技能" class="headerlink" title="3.EXCEL基本操作—-目前具备基本的EXCEL操作技能"></a>3.EXCEL基本操作—-目前具备基本的EXCEL操作技能</h2><p>因为公司很多其它部门非技术人员是不会使用编程工具的，而会使用相对简单的Excel来处理一些报表。这个时候就可能需要你可以在Excel中做一些数据分析工作然后反馈，但是也不必太深入，掌握核心的功能即可。</p><h2 id="4-PYTHON语言或者R语言—-python语言基本语法已经掌握，目前在学pandas"><a href="#4-PYTHON语言或者R语言—-python语言基本语法已经掌握，目前在学pandas" class="headerlink" title="4.PYTHON语言或者R语言—-python语言基本语法已经掌握，目前在学pandas"></a>4.PYTHON语言或者R语言—-python语言基本语法已经掌握，目前在学pandas</h2><p>主要包括python中的pandas库和numpy库和matplotlib库，<br>pandas主要用于数据处理，numpy主要用于数据计算，matplotlib主要用于可视化。<br>目前学习pandas。</p><h2 id="5-爬虫—-目前简单一点的网站都可以爬到，scrapy待学习"><a href="#5-爬虫—-目前简单一点的网站都可以爬到，scrapy待学习" class="headerlink" title="5.爬虫—-目前简单一点的网站都可以爬到，scrapy待学习"></a>5.爬虫—-目前简单一点的网站都可以爬到，scrapy待学习</h2><p>目前主要需要学习的就是scrapy框架，这个框架挺重要的，感觉是爬虫必备的库。</p><h2 id="6-机器学习—-进阶内容，与pandas和numpy有交叉"><a href="#6-机器学习—-进阶内容，与pandas和numpy有交叉" class="headerlink" title="6.机器学习—-进阶内容，与pandas和numpy有交叉"></a>6.机器学习—-进阶内容，与pandas和numpy有交叉</h2><p>机器学习主要学习各种算法，实际上就已经到了数据挖掘的领域了，属于进阶内容。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>data analysis</tag>
+      
+      <tag>python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>数据分析系列-4</title>
+    <link href="/2020/03/28/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-4/"/>
+    <url>/2020/03/28/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-4/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>数据分析系列-3</title>
     <link href="/2020/03/26/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-3/"/>
     <url>/2020/03/26/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-3/</url>
