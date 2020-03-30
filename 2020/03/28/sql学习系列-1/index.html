@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    333 字
+                    383 字
                   </span>
                 
 
@@ -181,7 +181,8 @@
     多行*/</code></pre><h1 id="2、排序检索数据"><a href="#2、排序检索数据" class="headerlink" title="2、排序检索数据"></a>2、排序检索数据</h1><h2 id="2-1-按照某个列排序"><a href="#2-1-按照某个列排序" class="headerlink" title="2.1 按照某个列排序"></a>2.1 按照某个列排序</h2><p>从某个表中选择某列，并且按照该列进行排序</p>
 <pre><code>    SELECT 列名 FROM 表名 ORDER BY 列名</code></pre><h2 id="2-2-按照多个列名排序"><a href="#2-2-按照多个列名排序" class="headerlink" title="2.2 按照多个列名排序"></a>2.2 按照多个列名排序</h2><p>从某个表中选择多列，并且先按照列1排序，再按照列2排序，就是再列1排序的基础上，进行列2的排序。</p>
 <pre><code>    SELECT 列名1,列名2,列名3 FROM 表名 ORDER BY 列名1，列名2</code></pre><h2 id="2-3-按照列位置排序"><a href="#2-3-按照列位置排序" class="headerlink" title="2.3 按照列位置排序"></a>2.3 按照列位置排序</h2><p>选择列名1,列名2,列名3  3列，按照先列名2，再列名3的顺序排序</p>
-<pre><code>    SELECT 列名1,列名2,列名3 FROM 表名 ORDER BY 2，3</code></pre>
+<pre><code>    SELECT 列名1,列名2,列名3 FROM 表名 ORDER BY 2，3</code></pre><h1 id="3、过滤数据"><a href="#3、过滤数据" class="headerlink" title="3、过滤数据"></a>3、过滤数据</h1><h2 id="3-1使用WHERE语句"><a href="#3-1使用WHERE语句" class="headerlink" title="3.1使用WHERE语句"></a>3.1使用WHERE语句</h2><p>检索列1和列2但是不返回所有的行，仅返回列1=某值得那行</p>
+<pre><code>    SELECT 列名1,列名2 FROM 表名 WHERE 列名1 = 某值</code></pre>
             </div>
             <hr>
             <div>
