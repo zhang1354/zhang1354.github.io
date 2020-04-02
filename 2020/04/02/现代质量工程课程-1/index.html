@@ -17,7 +17,7 @@
   <meta name="description" content="嘻嘻嘻">
   <meta name="author" content="zzzspider">
   <meta name="keywords" content="">
-  <title>数据分析系列-6 - 明白很多道理，却依然活不好这一生</title>
+  <title>现代质量工程课程-1 - 明白很多道理，却依然活不好这一生</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  Thursday, April 2nd 2020, 2:49 pm
+                  Thursday, April 2nd 2020, 6:52 pm
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    908 字
+                    926 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      4 分钟
+                      3 分钟
                   </span>
                 
 
@@ -169,117 +169,17 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <h1 id="六、数据分析第六课-数据清洗"><a href="#六、数据分析第六课-数据清洗" class="headerlink" title="六、数据分析第六课-数据清洗"></a>六、数据分析第六课-数据清洗</h1><a id="more"></a>    
-<h2 id="1-读取数据"><a href="#1-读取数据" class="headerlink" title="1.读取数据"></a>1.读取数据</h2><p>数据如图所示的，前两行有空值，左边有空值，中间也有空值的数据。<br><img src="/img/shuju.png" srcset="/img/loading.gif" alt=""><br>首先读取数据要先将前两行给过滤掉（skiprows=2）：</p>
-<pre><code>    df = pd.read_excel(r&#39;./数据清洗.xlsx&#39;,skiprows=2)
-    df
-    结果：
-        Unnamed: 0    姓名    科目    分数
-    0    NaN    小明    语文    85.0
-    1    NaN    NaN    数学    85.0
-    2    NaN    NaN    英语    85.0
-    3    NaN    NaN    NaN    NaN
-    4    NaN    小王    语文    86.0
-    5    NaN    NaN    数学    NaN
-    6    NaN    NaN    英语    86.0
-    7    NaN    NaN    NaN    NaN
-    8    NaN    小刘    语文    87.0
-    9    NaN    NaN    数学    87.0
-    10    NaN    NaN    英语    87.0</code></pre><h2 id="2-检测空值"><a href="#2-检测空值" class="headerlink" title="2.检测空值"></a>2.检测空值</h2><pre><code>    #监测表中所有数据是否是空值，true表示空值，false非空值
-    df.ismull()
-    结果：
-        Unnamed: 0    姓名    科目    分数
-    0    True    False    False    False
-    1    True    True    False    False
-    2    True    True    False    False
-    3    True    True    True    True
-    4    True    False    False    False
-    5    True    True    False    True
-    6    True    True    False    False
-    7    True    True    True    True
-    8    True    False    False    False
-    9    True    True    False    False
-    10    True    True    False    False
-    #与之相反，notnull的结果与isnull相反，看需要来选择
-    df.notnull()</code></pre><p>检测单个列</p>
-<pre><code>    df[&#39;姓名&#39;].isnull()
-    结果：
-    0     False
-    1      True
-    2      True
-    3      True
-    4     False
-    5      True
-    6      True
-    7      True
-    8     False
-    9      True
-    10     True</code></pre><h2 id="3-筛选分数没有空值的所有行："><a href="#3-筛选分数没有空值的所有行：" class="headerlink" title="3.筛选分数没有空值的所有行："></a>3.筛选分数没有空值的所有行：</h2><pre><code>    df.loc[df[&#39;分数&#39;].notnull(),:]
-    结果：
-    Unnamed: 0    姓名    科目    分数
-        0    NaN    小明    语文    85.0
-        1    NaN    NaN    数学    85.0
-        2    NaN    NaN    英语    85.0
-        4    NaN    小王    语文    86.0
-        6    NaN    NaN    英语    86.0
-        8    NaN    小刘    语文    87.0
-        9    NaN    NaN    数学    87.0
-        10    NaN    NaN    英语    87.0</code></pre><h2 id="4-删除全是空值的列"><a href="#4-删除全是空值的列" class="headerlink" title="4.删除全是空值的列"></a>4.删除全是空值的列</h2><p>dropna就是移除空值函数，axis=columns表示删除列，how=all表示如果此列所有值都是控制则删除掉，inplace=true表示直接修改这个df</p>
-<pre><code>    df.dropna(axis=&#39;columns&#39;,how=&#39;all&#39;,inplace=True)
-    df
-    结果：
-        姓名    科目    分数
-    0    小明    语文    85.0
-    1    NaN    数学    85.0
-    2    NaN    英语    85.0
-    3    NaN    NaN    NaN
-    4    小王    语文    86.0
-    5    NaN    数学    NaN
-    6    NaN    英语    86.0
-    7    NaN    NaN    NaN
-    8    小刘    语文    87.0
-    9    NaN    数学    87.0
-    10    NaN    英语    87.0</code></pre><p>可以看到第一列的空值已经删除，</p>
-<h2 id="5-删除全是空值的行"><a href="#5-删除全是空值的行" class="headerlink" title="5.删除全是空值的行"></a>5.删除全是空值的行</h2><pre><code>    df.dropna(axis=&#39;index&#39;,how=&#39;all&#39;,inplace=True)
-    结果：
-        姓名    科目    分数
-    0    小明    语文    85.0
-    1    NaN    数学    85.0
-    2    NaN    英语    85.0
-    4    小王    语文    86.0
-    5    NaN    数学    NaN
-    6    NaN    英语    86.0
-    8    小刘    语文    87.0
-    9    NaN    数学    87.0
-    10    NaN    英语    87.0
-    可以看到空行已经被删除了。</code></pre><h2 id="6-将分数列为空的填充为0"><a href="#6-将分数列为空的填充为0" class="headerlink" title="6.将分数列为空的填充为0"></a>6.将分数列为空的填充为0</h2><p>fillna是填充控制的函数，需要填充的列传入参数({‘列名’：’需要替换成的值’})</p>
-<pre><code>    df.fillna({&#39;分数&#39;:0})
-    结果：
-        姓名    科目    分数
-    0    小明    语文    85.0
-    1    NaN    数学    85.0
-    2    NaN    英语    85.0
-    4    小王    语文    86.0
-    5    NaN    数学    0.0
-    6    NaN    英语    86.0
-    8    小刘    语文    87.0
-    9    NaN    数学    87.0
-    10    NaN    英语    87.0
-    等同于：
-    df.loc[:,&#39;分数&#39;]=df[&#39;分数&#39;].fillna(0)</code></pre><h2 id="7-将姓名的缺失值进行填充"><a href="#7-将姓名的缺失值进行填充" class="headerlink" title="7.将姓名的缺失值进行填充"></a>7.将姓名的缺失值进行填充</h2><pre><code>    df.loc[:,&#39;姓名&#39;]=df[&#39;姓名&#39;].fillna(method=&#39;ffill&#39;)
-    df
-    结果：
-    姓名    科目    分数
-0    小明    语文    85.0
-1    小明    数学    85.0
-2    小明    英语    85.0
-4    小王    语文    86.0
-5    小王    数学    NaN
-6    小王    英语    86.0
-8    小刘    语文    87.0
-9    小刘    数学    87.0
-10    小刘    英语    87.0</code></pre><h2 id="8-数据保存"><a href="#8-数据保存" class="headerlink" title="8.数据保存"></a>8.数据保存</h2><pre><code>    df.to_excel(r&#39;./数据清洗_清洗之后.xlsx&#39;,index=False)
-    index=False表示不要数据的第一列的索引。</code></pre>
+              <h1 id="为了限制自己上课，就通过记笔记来吧，顺便练习一下记笔记。"><a href="#为了限制自己上课，就通过记笔记来吧，顺便练习一下记笔记。" class="headerlink" title="为了限制自己上课，就通过记笔记来吧，顺便练习一下记笔记。"></a>为了限制自己上课，就通过记笔记来吧，顺便练习一下记笔记。</h1><a id="more"></a>
+<h1 id="一、质量工程概述"><a href="#一、质量工程概述" class="headerlink" title="一、质量工程概述"></a>一、质量工程概述</h1><h2 id="1-基本概念和定义"><a href="#1-基本概念和定义" class="headerlink" title="1.基本概念和定义"></a>1.基本概念和定义</h2><h3 id="1-1质量"><a href="#1-1质量" class="headerlink" title="1.1质量"></a>1.1质量</h3><p>质量是指 反映实体满足明确和隐含需要的能力的特性总和。<br>实体是 可单独描述和研究的事物<br>需要分为明确需要和隐含需要，明确需要是指双方明确规定的内容；隐含是指人们公认的，不言而喻的需要<br>特性 指实体所持有的性质，反映了实体满足需求的能力。<br>日本田口玄一从经济学角度给质量下定义<br>美国朱兰从用户角度给质量下定义</p>
+<h3 id="1-2产品质量"><a href="#1-2产品质量" class="headerlink" title="1.2产品质量"></a>1.2产品质量</h3><p>产品质量是指产品能满足人们的需要而应具备的特性，<br>就机械工业的硬件产品而言，大致可以归纳为一下六个方面的特性：<br>1.性能 2.可信性 3.安全性 4.适应性 5.经济型 6.时间性（供货、产品随时间变化、产品寿命）<br>就服务类别产品而言：<br>1.功能性 2.经济性 3.安全性 4.时间性 5.舒适性 6.文明性<br>就软件类别产品：<br>1.性能 2.安全性 3.可靠性 4.保密性 5.专用性 6.经济性</p>
+<h3 id="1-3过程质量"><a href="#1-3过程质量" class="headerlink" title="1.3过程质量"></a>1.3过程质量</h3><p>过程：将输入转化为输出额一组彼此相关的资源和活动。过程一定要增值<br>过程质量：可理解为过程满足规定需要或潜在需要的特性的总和。<br>过程质量包括：<br>1.规划过程质量 2.设计过程质量(是产品的固有质量问题，没法解决，质量问题大多70%问题出现在此环节) 3.制造过程质量 4.使用过程质量(产品使用过程中提现的质量) 5.报废处理过程质量(是设计质量的体现之一) 6.服务过程质量(只服务要求的满足程度)</p>
+<h3 id="1-4工作质量"><a href="#1-4工作质量" class="headerlink" title="1.4工作质量"></a>1.4工作质量</h3><p>一般指企业生产经营中各项工作对产品和服务质量的保证程度。<br>工作质量不像产品和服务质量那样直观的表现在人的面前，而是体现在生产、技术、经营活动中，通过工作效率和成果，最终体现在3产品质量和经济效益上。</p>
+<h3 id="1-5狭义质量和广义质量"><a href="#1-5狭义质量和广义质量" class="headerlink" title="1.5狭义质量和广义质量"></a>1.5狭义质量和广义质量</h3><p>狭义质量 仅从用户角度来看质量<br>广义质量 不仅从客户角度看质量，同时还从制造者和社会角度理解 质量</p>
+<h3 id="1-6寿命周期和循环质量"><a href="#1-6寿命周期和循环质量" class="headerlink" title="1.6寿命周期和循环质量"></a>1.6寿命周期和循环质量</h3><p>从产品产生到报废的整个过程称为产品的寿命周期循环，将产品寿命周期的各过程的质量问题，称为质量环<br>质量螺旋侧重企业内部的质量循环和与外部的关系<br>质量环则从寿命周期的角度论述质量活动的不间断性<br><img src="/img/zhiliang.png" srcset="/img/loading.gif" alt=""><br><img src="/img/zhilianghuan.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="1-7零缺陷、零废品、零故障和零污染是质量管理的追求"><a href="#1-7零缺陷、零废品、零故障和零污染是质量管理的追求" class="headerlink" title="1.7零缺陷、零废品、零故障和零污染是质量管理的追求"></a>1.7零缺陷、零废品、零故障和零污染是质量管理的追求</h3><h3 id="1-8质量工程"><a href="#1-8质量工程" class="headerlink" title="1.8质量工程"></a>1.8质量工程</h3><p>定义：为保证满足客户和社会对产品和服务质量的需求，组织与社会所采取的一切相关活动的总和。<br>分为三部分：质量管理、社会环境、质量监督<br><img src="/img/zhilianggongcheng.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="2-提高产品质量的意义"><a href="#2-提高产品质量的意义" class="headerlink" title="2.提高产品质量的意义"></a>2.提高产品质量的意义</h2><h3 id="2-1质量与人生活息息相关"><a href="#2-1质量与人生活息息相关" class="headerlink" title="2.1质量与人生活息息相关"></a>2.1质量与人生活息息相关</h3><h3 id="2-2质量是企业生存发展的保障"><a href="#2-2质量是企业生存发展的保障" class="headerlink" title="2.2质量是企业生存发展的保障"></a>2.2质量是企业生存发展的保障</h3><p>我刚刚给师姐说话，这一段就PASS掉</p>
+<h3 id="2-3质量检验、统计质量控制和全面质量管理的比较"><a href="#2-3质量检验、统计质量控制和全面质量管理的比较" class="headerlink" title="2.3质量检验、统计质量控制和全面质量管理的比较"></a>2.3质量检验、统计质量控制和全面质量管理的比较</h3><p>如图：<br><img src="/img/zhiliangjianyan.png" srcset="/img/loading.gif" alt=""></p>
+
             </div>
             <hr>
             <div>
@@ -289,9 +189,7 @@
                   <span>
                 <i class="iconfont icon-tag"></i>
                     
-                      <a class="hover-with-bg" href="/tags/data-analysis/">data analysis</a>
-                    
-                      <a class="hover-with-bg" href="/tags/python/">python</a>
+                      <a class="hover-with-bg" href="/tags/%E8%AF%BE%E7%A8%8B/">课程</a>
                     
                   </span>
                 
@@ -304,18 +202,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/04/02/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-7/">
-                        <i class="fa fa-chevron-left"></i>
-                        <span class="hidden-mobile">数据分析系列-7</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/04/01/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-5/">
-                        <span class="hidden-mobile">数据分析系列-5</span>
+                      <a href="/2020/04/02/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97-7/">
+                        <span class="hidden-mobile">数据分析系列-7</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
@@ -546,7 +438,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "数据分析系列-6&nbsp;",
+        "现代质量工程课程-1&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
