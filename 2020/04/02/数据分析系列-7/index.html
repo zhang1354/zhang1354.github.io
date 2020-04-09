@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    12 字
+                    954 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      1 分钟
+                      5 分钟
                   </span>
                 
 
@@ -170,7 +170,130 @@
             
             <div class="markdown-body">
               <h1 id="七、数据分析第七课-数据排序"><a href="#七、数据分析第七课-数据排序" class="headerlink" title="七、数据分析第七课-数据排序"></a>七、数据分析第七课-数据排序</h1><a id="more"></a>    
+<h2 id="1-数据排序"><a href="#1-数据排序" class="headerlink" title="1.数据排序"></a>1.数据排序</h2><p>有两种排序方法，就是series和dataframe<br>首先</p>
+<pre><code>    import pandas as pd
+    path = &#39;./daily_price_btc_cny.csv&#39;
+    df = pd.read_csv(path)</code></pre><h3 id="1-1series排序"><a href="#1-1series排序" class="headerlink" title="1.1series排序"></a>1.1series排序</h3><pre><code>    df[&#39;open&#39;].sort_values(ascending=False)
+    #默认升序排列
+    #ascending=False  为降序排列
+    结果：
+    1462    30878.76
+    1461    29902.03
+    1447    29540.00
+    1459    29496.00
+    1463    29410.50
+              ...   
+    6         739.20
+    23        735.95
+    24        733.00
+    7         725.79
+    8         715.86
+    Name: open, Length: 1480, dtype: float64</code></pre><h3 id="1-2dataframe排序"><a href="#1-2dataframe排序" class="headerlink" title="1.2dataframe排序"></a>1.2dataframe排序</h3><p>按照单行排序</p>
+<pre><code>    #按照单行排序
+    df.sort_values(by=&#39;close&#39;)
+    结果：
+        date    open    high    low    close    volume
+    7    2013/9/8    725.79    732.00    715.85    715.86    698.4290
+    6    2013/9/7    739.20    740.40    696.90    725.00    1033.8905
+    23    2013/9/24    735.95    741.00    729.30    729.30    684.1842
+    32    2013/10/3    778.00    778.00    679.11    735.00    3876.1255
+    22    2013/9/23    745.61    746.00    730.43    736.00    450.8465
+    ...    ...    ...    ...    ...    ...    ...
+    1462    2017/9/2    30878.76    32350.00    28580.00    29400.08    15812.8839
+    1458    2017/8/29    28610.00    30000.00    28510.93    29496.00    13410.0600
+    1446    2017/8/17    29017.00    30299.99    28680.10    29510.03    17491.4300
+    1460    2017/8/31    29284.03    30099.99    29100.00    29949.00    8766.4873
+    1461    2017/9/1    29902.03    30988.00    29651.11    30878.76    12207.8512</code></pre><p>按照多行排序</p>
+<pre><code>    #按照多行排序，默认两个都升序
+    df.sort_values(by=[&#39;date&#39;,&#39;open&#39;])
+    #先按照date进行排序，然后如果date中有一样的，在按照open排序
 
+    #按照多行排序，都是降序
+    df.sort_values(by=[&#39;date&#39;,&#39;open&#39;],ascending = False)
+
+    #按照多行排序，都是降序
+    df.sort_values(by=[&#39;date&#39;,&#39;open&#39;],ascending = False)</code></pre><h2 id="2-字符串处理"><a href="#2-字符串处理" class="headerlink" title="2.字符串处理"></a>2.字符串处理</h2><h3 id="2-1str属性"><a href="#2-1str属性" class="headerlink" title="2.1str属性"></a>2.1str属性</h3><pre><code>    df.dtypes
+    #查看各列的类型，注意str属性只能在字符串列使用，就是object
+    #在数字列使用str属性的话会报错
+
+    #只能用series处理字符串，df没有这个属性
+    df[&#39;date&#39;].str
+
+    df[&#39;date&#39;].str.replace(&#39;/&#39;,&#39;-&#39;)
+
+    df[&#39;open&#39;].str.len()
+    结果报错</code></pre><h3 id="2-2使用str的startwith、contains等得到bool的series可以做条件查询"><a href="#2-2使用str的startwith、contains等得到bool的series可以做条件查询" class="headerlink" title="2.2使用str的startwith、contains等得到bool的series可以做条件查询"></a>2.2使用str的startwith、contains等得到bool的series可以做条件查询</h3><pre><code>    condition = df[&#39;date&#39;].str.startswith(&#39;2017/9&#39;)
+    condition
+    结果：结果是bool值
+    0       False
+    1       False
+    2       False
+    3       False
+    4       False
+            ...  
+    1475     True
+    1476     True
+    1477     True
+    1478     True
+    1479     True
+
+    df[condition].head
+    结果：
+    date      open      high       low     close      volume
+    1461   2017/9/1  29902.03  30988.00  29651.11  30878.76  12207.8512
+    1462   2017/9/2  30878.76  32350.00  28580.00  29400.08  15812.8839
+    1463   2017/9/3  29410.50  30398.00  27577.00  28310.69   9638.3445
+    1464   2017/9/4  28260.09  29000.00  25902.00  26348.17  18774.3634
+    1465   2017/9/5  26348.17  27376.00  22592.31  26060.00  31772.2396
+    1466   2017/9/6  26010.90  28810.00  26000.00  28656.90  17436.5092
+    1467   2017/9/7  28745.00  29348.06  28100.01  29027.68  11196.6343
+    1468   2017/9/8  29027.68  29200.00  23131.40  25114.90  24609.8043
+    1469   2017/9/9  25113.00  26320.00  23300.00  24428.80  27006.0589</code></pre><h3 id="2-3多次使用str属性"><a href="#2-3多次使用str属性" class="headerlink" title="2.3多次使用str属性"></a>2.3多次使用str属性</h3><p>例，将日期中的年月提取出来</p>
+<pre><code>    df[&#39;date&#39;].str.replace(&#39;/&#39;,&#39;&#39;).str.slice(0,6)
+    #先用str的replace替换，然后用str的slice切片取出第0个到第6个
+    结果：
+    0       201391
+    1       201392
+    2       201393
+    3       201394
+    4       201395
+             ...  
+    1475    201791
+    1476    201791
+    1477    201791
+    1478    201791</code></pre><h2 id="3-index操作"><a href="#3-index操作" class="headerlink" title="3.index操作"></a>3.index操作</h2><pre><code>    import numpy as np
+    df =pd.DataFrame(
+        np.arange(12).reshape(3,4),
+        columns=[&#39;A&#39;,&#39;B&#39;,&#39;C&#39;,&#39;D&#39;]
+    )
+    df
+    产生这样一个3行4列的数据表
+        A    B    C    D
+    0    0    1    2    3
+    1    4    5    6    7
+    2    8    9    10    11</code></pre><h3 id="3-1删除某一列"><a href="#3-1删除某一列" class="headerlink" title="3.1删除某一列"></a>3.1删除某一列</h3><pre><code>    df.drop(&#39;A&#39;,axis=1)
+    #axis=1表示列,或者axis=column
+    结果：
+        B    C    D
+    0    1    2    3
+    1    5    6    7
+    2    9    10    11</code></pre><h3 id="3-2删除某一行"><a href="#3-2删除某一行" class="headerlink" title="3.2删除某一行"></a>3.2删除某一行</h3><pre><code>    df.drop(&#39;A&#39;,axis=1)
+    #axis=1表示列,或者axis=column
+    结果：
+    A    B    C    D
+0    0    1    2    3
+2    8    9    10    11</code></pre><h3 id="3-3按axis-0-index执行mean聚合操作–遍历行，找到列的均值"><a href="#3-3按axis-0-index执行mean聚合操作–遍历行，找到列的均值" class="headerlink" title="3.3按axis=0/index执行mean聚合操作–遍历行，找到列的均值"></a>3.3按axis=0/index执行mean聚合操作–遍历行，找到列的均值</h3><pre><code>    按axis=0/index执行mean聚合操作--遍历行，找到列的均值
+    结果：
+    A    4.0
+    B    5.0
+    C    6.0
+    D    7.0
+    dtype: float64</code></pre><h3 id="3-4按axis-1-column执行mean聚合操作–遍历列，找到行的均值"><a href="#3-4按axis-1-column执行mean聚合操作–遍历列，找到行的均值" class="headerlink" title="3.4按axis=1/column执行mean聚合操作–遍历列，找到行的均值"></a>3.4按axis=1/column执行mean聚合操作–遍历列，找到行的均值</h3><pre><code>    df.mean(axis=1)
+    结果：
+    0    1.5
+    1    5.5
+    2    9.5
+    dtype: float64</code></pre>
             </div>
             <hr>
             <div>
