@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    2.4k 字
+                    2.6k 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      9 分钟
+                      10 分钟
                   </span>
                 
 
@@ -254,7 +254,29 @@
     FROM Person 
     LEFT JOIN Address
     ON Person.PersonId = Address.PersonId</code></pre><p>左插入就是按照左边的表的列名来连接，右插入就是按照右边的表的列名来连接<br>因为可能出现的情况就是，左边的表中的id有9个值，和右边表中的id有10个值，这样将两个表进行连接时候就会报错<br>所以需要按照，此时使用left join连接就是按照左边的id来选择右边的，一共选9个<br>            此时使用right join连接就是按照右边的id来选择左边的，一共选择10个，多余的空填入空值</p>
-<h1 id="好了结束了，看不懂的和感觉没有用的就没添加了，好吧！"><a href="#好了结束了，看不懂的和感觉没有用的就没添加了，好吧！" class="headerlink" title="好了结束了，看不懂的和感觉没有用的就没添加了，好吧！"></a>好了结束了，看不懂的和感觉没有用的就没添加了，好吧！</h1><p>继续加油！</p>
+<h1 id="查找第N高的数据"><a href="#查找第N高的数据" class="headerlink" title="查找第N高的数据"></a>查找第N高的数据</h1><pre><code>    select ifNull(
+    (select distinct salary
+    from Employee 
+    order by salary Desc
+    limit N,1),null
+    ) as SecondHighestSalary;</code></pre><p>每个语句解析</p>
+<pre><code>    select distinct salary
+    from Employee 
+    #表示把表Employee按照salary列相同的值的消去，相当于python的set
+
+    order by salary Desc
+    #表示按照salary进行降序排列，如果没有DESC表示升序排列
+
+    limit N,M
+    #表示从第N行开始，选取M个值
+
+    select ifNull(a,b)
+    #表示对a的内容进行是否是空值进行判断
+    如果a是非空值，则返回a
+    如果a是空置，返回b
+
+    as SecondHighestSalary
+    #表示将选择内容重新命名</code></pre><h1 id="好了结束了，看不懂的和感觉没有用的就没添加了，好吧！"><a href="#好了结束了，看不懂的和感觉没有用的就没添加了，好吧！" class="headerlink" title="好了结束了，看不懂的和感觉没有用的就没添加了，好吧！"></a>好了结束了，看不懂的和感觉没有用的就没添加了，好吧！</h1><p>继续加油！</p>
 
             </div>
             <hr>
