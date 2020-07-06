@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    2.2k 字
+                    2.4k 字
                   </span>
                 
 
@@ -249,7 +249,12 @@
     ALTER TABLE Orders
     ADD CONSTRAINT
     FOREIGN KEY (cust_id) REFERENCES Customers (cust_id) </code></pre><h2 id="13-3创建检查约束"><a href="#13-3创建检查约束" class="headerlink" title="13.3创建检查约束"></a>13.3创建检查约束</h2><p>检查名为 gender 的列只包含 M 或 F，可编写如下的 ALTER TABLE 语句：</p>
-<pre><code>    ADD CONSTRAINT CHECK (gender LIKE &#39;[MF]&#39;) </code></pre><h1 id="好了结束了，看不懂的和感觉没有用的就没添加了，好吧！"><a href="#好了结束了，看不懂的和感觉没有用的就没添加了，好吧！" class="headerlink" title="好了结束了，看不懂的和感觉没有用的就没添加了，好吧！"></a>好了结束了，看不懂的和感觉没有用的就没添加了，好吧！</h1><p>继续加油！</p>
+<pre><code>    ADD CONSTRAINT CHECK (gender LIKE &#39;[MF]&#39;) </code></pre><h1 id="14-左插入和右插入"><a href="#14-左插入和右插入" class="headerlink" title="14.左插入和右插入"></a>14.左插入和右插入</h1><h2 id="14-1左插入就是将数据"><a href="#14-1左插入就是将数据" class="headerlink" title="14.1左插入就是将数据"></a>14.1左插入就是将数据</h2><p><img src="/img/charu.jpg" srcset="/img/loading.gif" alt=""></p>
+<pre><code>    SELECT Person.FirstName, Person.LastName,Address.City,Address.State
+    FROM Person 
+    LEFT JOIN Address
+    ON Person.PersonId = Address.PersonId</code></pre><p>左插入就是按照左边的表的列名来连接，右插入就是按照右边的表的列名来连接<br>因为可能出现的情况就是，左边的表中的id有9个值，和右边表中的id有10个值，这样将两个表进行连接时候就会报错<br>所以需要按照，此时使用left join连接就是按照左边的id来选择右边的，一共选9个<br>            此时使用right join连接就是按照右边的id来选择左边的，一共选择10个，多余的空填入空值</p>
+<h1 id="好了结束了，看不懂的和感觉没有用的就没添加了，好吧！"><a href="#好了结束了，看不懂的和感觉没有用的就没添加了，好吧！" class="headerlink" title="好了结束了，看不懂的和感觉没有用的就没添加了，好吧！"></a>好了结束了，看不懂的和感觉没有用的就没添加了，好吧！</h1><p>继续加油！</p>
 
             </div>
             <hr>
